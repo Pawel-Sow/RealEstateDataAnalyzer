@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DashboardWebApp/DashboardWebApp.csproj" Id="43a82e91-c62d-4116-83e5-0b645323190f" />
+  <Project Path="DataCollectorService/DataCollectorService.csproj" />
+  <Project Path="DomainModel/DomainModel.csproj" Id="9dedb307-133d-4ba1-97b1-4a5f8e32e249" />
+  <Project Path="MyApp.Data/MyApp.Data.csproj" Id="8c80dfed-83a7-4019-a017-40f94a3472be" />
+</Solution>

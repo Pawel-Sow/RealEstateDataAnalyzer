@@ -1,0 +1,167 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        
+        const avgDaysOnMarket = @Html.Raw(Json.Serialize(Model.AvgDaysOnMarket));
+        const avgPricePerCity = @Html.Raw(Json.Serialize(Model.AvgPricePerCity));
+        const avgPricePerPropertyType = @Html.Raw(Json.Serialize(Model.AvgPricePerPropertyType));
+        const avgPricePerYearBuild = @Html.Raw(Json.Serialize(Model.AvgPricePerYearBuild));
+        const kpi = @Html.Raw(Json.Serialize(Model.KPI));
+        const priceHistogram = @Html.Raw(Json.Serialize(Model.PriceHistogram));
+        const PricePerSqft = @Html.Raw(Json.Serialize(Model.PricePerSqft));
+
+        new Chart(document.getElementById('avgDaysOnMarketChart'), {
+            type: 'bar',
+            data: {
+                    labels: avgDaysOnMarket.map(x => x.propertyType),
+                    datasets: [{
+                    label: 'Average Days on Market',
+                    data: avgDaysOnMarket.map(x => x.avgDaysOnMarket)
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('avgPricePerCityChart'), {
+            type: 'bar',
+            data: {
+                labels: avgPricePerCity.map(x => x.city),
+                datasets: [{
+                    label: 'Average Price Per City',
+                    data: avgPricePerCity.map(x => x.avgPrice)
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('avgavgPricePerPropertyTypeChart'), {
+            type: 'bar',
+            data: {
+                labels: avgPricePerPropertyType.map(x => x.propertyTypeMappingName),
+                datasets: [{
+                    label: 'Average Price Per Property Type',
+                    data: avgPricePerPropertyType.map(x => x.avgPrice)
+                }]
+            }
+        });
+        
+        new Chart(document.getElementById('avgavgPricePerYearBuildChart'), {
+            type: 'bar',
+            data: {
+                labels: avgPricePerYearBuild.map(x => x.yearBuiltRange),
+                datasets: [{
+                    label: 'Average Price Per Sqft Per Year Built',
+                    data: avgPricePerYearBuild.map(x => x.avgPrice)
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('priceHistogramChart'), {
+            type: 'bar',
+                data: {
+                labels: priceHistogram.map(x => x.priceRange),
+                datasets: [{
+                    label: 'Number of Properties',
+                    data: priceHistogram.map(x => x.countProperties)
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('pricePerSqftChart'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Price vs Sqft',
+                    data: PricePerSqft.map(x => ({
+                        x: x.sqft,
+                        y: x.price
+                    }))
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Sqft'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Price'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Please select a region</p>
+    <form method="get">
+        <select name="SelectedRegion" onchange="this.form.submit()">
+            @foreach (var region in Model.Regions)
+            {
+                <option value="@region.RegionId" selected="@(region.RegionId == Model.SelectedRegion)">
+                    @region.RegionName
+                </option>
+            }
+        </select>
+    </form>
+
+    <div class="kpi-container">
+        <div class="kpi-card">
+            <h3>Average Days On Market</h3>
+            <div class="kpi-value">@Model.KPI.AvgDaysOnMarket</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Average Price</h3>
+            <div class="kpi-value">@Model.KPI.AvgPrice USD</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Average Price / Sqft</h3>
+            <div class="kpi-value">@Model.KPI.AvgPricePerSqft USD</div>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Median Price</h3>
+            <div class="kpi-value">@Model.KPI.MedianPrice USD</div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div>
+            <div>
+                <canvas id="avgDaysOnMarketChart"></canvas>
+            </div>
+            <div>
+                <canvas id="avgPricePerCityChart"></canvas>
+            </div>
+            <div>
+                <canvas id="priceHistogramChart"></canvas>
+            </div>
+        </div>
+        <div>
+            <div>
+                <canvas id="avgavgPricePerPropertyTypeChart"></canvas>
+            </div>
+            <div>
+                <canvas id="avgavgPricePerYearBuildChart"></canvas>
+            </div>
+            <div>
+                <canvas id="pricePerSqftChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
