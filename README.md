@@ -49,7 +49,7 @@ To create the full database schema:
 Open SQL Server Management Studio (SSMS)
 Enable SQLCMD Mode
 Run:
-Database/Init/99_RunAll.sql
+Database/RunAll.sql
 
 For more details, see the README in the /Database directory.
 
