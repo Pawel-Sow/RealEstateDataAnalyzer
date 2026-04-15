@@ -90,3 +90,5 @@ The application can run fully offline using cached data
 Entity Framework Core
 SQL Server
 Chart.js
+
+![Screenshot](screenshots/Screenshot.png)
